@@ -34,6 +34,7 @@ public struct CocoaTextField<Label: View>: View {
         var focusRingType: FocusRingType = .none
         
         var autocapitalization: UITextAutocapitalizationType?
+        var autocorrection: UITextAutocorrectionType = .default
         var borderStyle: UITextField.BorderStyle = .none
         var clearButtonMode: UITextField.ViewMode?
         var uiFont: UIFont?
@@ -195,7 +196,7 @@ fileprivate struct _CocoaTextField<Label: View>: UIViewRepresentable {
 
         setConfiguration: do {
             uiView.autocapitalizationType = configuration.autocapitalization ?? .sentences
-            uiView.autocorrectionType = context.environment.disableAutocorrection.map({ $0 ? .no : .yes }) ?? .default
+            uiView.autocorrectionType = configuration.autocorrection
             uiView.borderStyle = configuration.borderStyle
             uiView.clearButtonMode = configuration.clearButtonMode ?? .never
             uiView.enablesReturnKeyAutomatically = configuration.enablesReturnKeyAutomatically ?? false
@@ -419,6 +420,10 @@ extension CocoaTextField {
     
     public func autocapitalization(_ autocapitalization: UITextAutocapitalizationType) -> Self {
         then({ $0.configuration.autocapitalization = autocapitalization })
+    }
+
+    public func autocorrection(_ autocorrection: UITextAutocorrectionType) -> Self {
+        then({ $0.configuration.autocorrection = autocorrection })
     }
     
     public func borderStyle(_ borderStyle: UITextField.BorderStyle) -> Self {
